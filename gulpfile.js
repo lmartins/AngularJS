@@ -18,11 +18,11 @@ var config = {
 
   HTML:{
     // src: ['pages/**/*.hbs']
-    build: "build/*.html"
+    build: "pages/**/*.html"
   },
 
   SASS: {
-    src: "sass/**/*.scss",
+    src: "src/sass/**/*.scss",
     build: "build/css/"
   }
 
@@ -130,7 +130,7 @@ gulp.task('js', function () {
 
 // HTML TEMPORARIO --------------------------------------------------------------
 gulp.task('html', function () {
-  gulp.src( config.HTML.buildFiles )
+  gulp.src( config.HTML.build )
     .pipe( plugins.livereload() );
 });
 
@@ -139,14 +139,14 @@ gulp.task('html', function () {
 // GLOBAL TASKS ---------------------------------------------------------------
 
 gulp.task('watch', function () {
-  gulp.watch( config.HTML.buildFiles , ['html'] );
+  gulp.watch( config.HTML.build , ['html'] );
   gulp.watch( config.JS.src , ["webpack"]);
   gulp.watch( config.JS.buildFiles , ["js"] );
   gulp.watch( config.SASS.src , ['sass']  );
 });
 
 gulp.task('default', ['prod'] );
-gulp.task('dev', ['set-env-dev', 'connect', 'watch'] );
+gulp.task('dev', ['set-env-dev',  'watch'] );
 gulp.task('prod', ['set-env-prod', 'connect', 'watch'] );
 
 gulp.task('shipit', ['set-env-prod', 'webpack'] );
