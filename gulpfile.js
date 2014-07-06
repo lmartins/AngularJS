@@ -36,6 +36,12 @@ gulp.task('connect', function() {
     livereload: false
   });
 });
+// gulp.task('webserver', function() {
+//   gulp.src('app')
+//     .pipe( plugins.webserver({
+//       livereload: true
+//     }));
+// });
 
 
 // SASS -----------------------------------------------------------------------
@@ -146,7 +152,7 @@ gulp.task('watch', function () {
 });
 
 gulp.task('default', ['prod'] );
-gulp.task('dev', ['set-env-dev',  'watch'] );
+gulp.task('dev', ['set-env-dev', 'connect',  'watch'] );
 gulp.task('prod', ['set-env-prod', 'connect', 'watch'] );
 
 gulp.task('shipit', ['set-env-prod', 'webpack'] );
