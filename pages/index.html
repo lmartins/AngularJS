@@ -2,7 +2,7 @@
 <html lang="en" ng-app="gemStore">
 <head>
   <meta charset="UTF-8">
-  <title>Angular App</title>
+  <title>Angular App...</title>
   <link rel="stylesheet" href="../build/css/main.css" media="screen" title="no title" charset="utf-8">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.2.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/bootstrap/3.2.0/css/bootstrap-theme.min.css" >
@@ -54,28 +54,40 @@
             <cite>by: {{review.author}}</cite>
           </blockquote>
           <form
-            name="renewForm"
+            name="reviewForm"
             ng-controller="ReviewController as reviewCtrl"
-            ng-submit="reviewCtrl.addReview(product)"
+            ng-submit="reviewForm.$valid && reviewCtrl.addReview(product)"
+            novalidate
             >
             <blockquote>
               <b>Stars:</b>
               {{reviewCtrl.review.body}}
               <cite>by: {{reviewCtrl.review.author}}</cite>
             </blockquote>
-            <select ng-model="reviewCtrl.review.stars">
+            <select ng-model="reviewCtrl.review.stars" required>
               <option value="1">1 star</option>
               <option value="2">2 stars</option>
               <option value="3">3 stars</option>
               <option value="4">4 stars</option>
               <option value="5">5 stars</option>
             </select>
-            <textarea ng-model="reviewCtrl.review.body"></textarea>
+            <textarea ng-model="reviewCtrl.review.body" required></textarea>
             <label>by</label>
-            <input type="email" ng-model="reviewCtrl.review.author">
+            <input type="email" ng-model="reviewCtrl.review.author" required>
+            <div>
+              reviewForm is {{reviewForm.$valid}}
+            </div>
             <input type="submit" value="Submit">
           </form>
         </div>
+      </section>
+
+      <section ng-controller="CommentsController as commentsCtrl">
+        <div id="messagesDiv">
+          <div ng-repeat="msg in messages"><em>{{msg.from}}</em>: {{msg.body}}</div>
+        </div>
+        <input type="text" ng-model="name" placeholder="Name">
+        <input type="text" ng-model="msg" ng-keydown="addMessage($event)" placeholder="Message...">
       </section>
 
     </div>
@@ -83,5 +95,7 @@
   <!--<script src="//cdn.jsdelivr.net/jquery/2.1.1/jquery.min.js"></script>
   <script src="//cdn.jsdelivr.net/bootstrap/3.2.0/js/bootstrap.min.js"></script>-->
   <script src="../build/js/main.bundle.js" charset="utf-8"></script>
+  <script src='https://cdn.firebase.com/js/client/1.0.17/firebase.js'></script>
+  <script src='https://cdn.firebase.com/libs/angularfire/0.7.1/angularfire.min.js'></script>
 </body>
 </html>

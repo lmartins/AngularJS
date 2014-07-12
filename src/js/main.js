@@ -3,7 +3,7 @@ var
   angular = require('angular'),
   ngDialog = require('ng-dialog');
 
-var app = angular.module('gemStore', []);
+var app = angular.module('gemStore', ['firebase']);
 
 var gems = [
   {
@@ -118,10 +118,21 @@ app.controller('GalleryController', function () {
   };
 });
 
-app.controller('ReviewController', function () {
+app.controller('ReviewController', function ($scope) {
   this.review = {};
   this.addReview = function (product) {
     product.reviews.push(this.review);
     this.review = {};
-  }
-})
+  };
+});
+
+app.controller('CommentsController', function ($scope, $firebase) {
+  var ref = new Firebase("https://rjozrl9jsvm.firebaseio-demo.com/");
+  $scope.messages = $firebase(ref);
+
+  $scope.addMessage = function(e) {
+    if (e.keyCode != 13) return;
+    $scope.messages.$add({from: $scope.name, body: $scope.msg});
+    $scope.msg = "";
+  };
+});
