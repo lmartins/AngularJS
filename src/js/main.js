@@ -1,9 +1,11 @@
+
 'use strict';
 var
   angular = require('angular'),
+  storeProducts = require('./product'),
   ngDialog = require('ng-dialog');
 
-var app = angular.module('gemStore', ['firebase']);
+var app = angular.module('gemStore', ['firebase', 'store-products']);
 
 var gems = [
   {
@@ -89,27 +91,21 @@ var gems = [
 ];
 
 
-app.controller('StoreController', function () {
-  this.products = gems;
+app.controller('StoreController', [ '$http' , function ($http) {
+  // this.products = gems;
+  var store = this;
+  store.products = [];
 
   // $scope.clickToOpen = function () {
   //   ngDialog.open({ template: 'popupTmpl.html' });
   // }
-});
+  $http.get('products.json')
+    .success( function (data) {
+      store.products = data;
+    });
 
+}]);
 
-app.controller('PanelController', function () {
-
-  this.tab = 1;
-
-  this.selectTab = function (setTab) {
-    this.tab = setTab;
-  };
-  this.isSelected = function (checkTab) {
-    return this.tab === checkTab;
-  };
-
-});
 
 app.controller('GalleryController', function () {
   this.current = 0;

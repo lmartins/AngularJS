@@ -1,6 +1,6 @@
 /*!
  * Playground
- * 0.1.0:1404657083937 [development build]
+ * 0.1.0:1405175201459 [development build]
  */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -48,12 +48,14 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	
 	'use strict';
 	var
 	  angular = __webpack_require__(1),
-	  ngDialog = __webpack_require__(3);
+	  storeProducts = __webpack_require__(3),
+	  ngDialog = __webpack_require__(4);
 	
-	var app = angular.module('gemStore', ['firebase']);
+	var app = angular.module('gemStore', ['firebase', 'store-products']);
 	
 	var gems = [
 	  {
@@ -139,27 +141,21 @@
 	];
 	
 	
-	app.controller('StoreController', function () {
-	  this.products = gems;
+	app.controller('StoreController', [ '$http' , function ($http) {
+	  // this.products = gems;
+	  var store = this;
+	  store.products = [];
 	
 	  // $scope.clickToOpen = function () {
 	  //   ngDialog.open({ template: 'popupTmpl.html' });
 	  // }
-	});
+	  $http.get('products.json')
+	    .success( function (data) {
+	      store.products = data;
+	    });
 	
+	}]);
 	
-	app.controller('PanelController', function () {
-	
-	  this.tab = 1;
-	
-	  this.selectTab = function (setTab) {
-	    this.tab = setTab;
-	  };
-	  this.isSelected = function (checkTab) {
-	    return this.tab === checkTab;
-	  };
-	
-	});
 	
 	app.controller('GalleryController', function () {
 	  this.current = 0;
@@ -21982,6 +21978,44 @@
 
 /***/ },
 /* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	(function() {
+	  "use strict";
+	
+	  var app = angular.module('store-products', []);
+	
+	  app.directive('productTitle', function () {
+	    return {
+	      restrict: 'E',
+	      templateUrl: 'product-title.html'
+	    };
+	  });
+	
+	  app.directive('productPanels', function () {
+	    return {
+	      restrict: 'E',
+	      templateUrl: 'product-panels.html',
+	      controller: function () {
+	        this.tab = 1;
+	
+	        this.selectTab = function (setTab) {
+	          this.tab = setTab;
+	        };
+	        this.isSelected = function (checkTab) {
+	          return this.tab === checkTab;
+	        };
+	      },
+	      controllerAs: 'panel'
+	    };
+	  });
+	
+	
+	}());
+
+
+/***/ },
+/* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*

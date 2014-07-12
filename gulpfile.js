@@ -18,7 +18,7 @@ var config = {
 
   HTML:{
     // src: ['pages/**/*.hbs']
-    build: "pages/**/*.html"
+    build: "build/pages/**/*.html"
   },
 
   SASS: {
@@ -31,7 +31,7 @@ var config = {
 // SERVER ---------------------------------------------------------------------
 gulp.task('connect', function() {
   plugins.connect.server({
-    root: './pages/',
+    root: './build/',
     port: 8000,
     livereload: false
   });
@@ -152,7 +152,7 @@ gulp.task('watch', function () {
 });
 
 gulp.task('default', ['prod'] );
-gulp.task('dev', ['set-env-dev', 'watch'] );
-gulp.task('prod', ['set-env-prod', 'watch'] );
+gulp.task('dev', ['set-env-dev', 'connect', 'watch'] );
+gulp.task('prod', ['set-env-prod', 'connect', 'watch'] );
 
 gulp.task('shipit', ['set-env-prod', 'webpack'] );
